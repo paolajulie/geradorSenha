@@ -46,31 +46,41 @@ class GeradorSenhasAppState extends State<GeradorSenhasApp> {
   }
 
   String verificarForcaSenha(String senha) {
-    int contador = 0;
+  int contador = 0;
 
-    if (senha.contains(RegExp(r'[A-Z]'))){
-      contador++;
-    }
-    if (senha.contains(RegExp(r'[a-z]'))){
-      contador++;
-    }
-    if (senha.contains(RegExp(r'[0-9]'))){
-      contador++;
-    }
-    if (senha.contains(RegExp(r'[!@#\$%&*]'))){
-      contador++;
-    }
-    if (senha.length >= 8){
-      contador++;
-    }
-    if (contador == 5){
-      return 'Forte';
-    } else if (contador >= 3){
-      return 'Média';
-    } else {
-      return 'Fraca';
-    }
+  if (senha.contains(RegExp(r'[A-Z]'))) {
+    contador++;
   }
+  if (senha.contains(RegExp(r'[a-z]'))) {
+    contador++;
+  }
+  if (senha.contains(RegExp(r'[0-9]'))) {
+    contador++;
+  }
+  if (senha.contains(RegExp(r'[!@#\$%&*]'))) {
+    contador++;
+  }
+  if (senha.length >= 8) {
+    contador++;
+  }
+
+  // Define o critério para a senha ser considerada "Muito Forte"
+  if (senha.length >= 12 &&
+      senha.contains(RegExp(r'[A-Z]')) &&
+      senha.contains(RegExp(r'[a-z]')) &&
+      senha.contains(RegExp(r'[0-9]')) &&
+      senha.contains(RegExp(r'[!@#\$%&*]')) &&
+      !senha.contains(RegExp(r'(.)\1{2,}'))  // Sem caracteres repetidos 3 ou mais vezes
+  ) {
+    return 'Muito Forte';
+  } else if (contador == 5) {
+    return 'Forte';
+  } else if (contador >= 3) {
+    return 'Média';
+  } else {
+    return 'Fraca';
+  }
+}
 
   @override
   Widget build(BuildContext context) {
